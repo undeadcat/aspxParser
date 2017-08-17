@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../../../Irony/Irony">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../Irony/Irony" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../Irony/Irony/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../Irony/Irony/obj" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../intellij-1c/simple-1c/Simple1C">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../intellij-1c/simple-1c/Simple1C" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../intellij-1c/simple-1c/Simple1C/obj" />
+    </content>
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../SomeParser" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../SomeParser.Tests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../TrashConsole" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SomeParser.Tests/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SomeParser.Tests/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SomeParser/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../SomeParser/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../TrashConsole/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../TrashConsole/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

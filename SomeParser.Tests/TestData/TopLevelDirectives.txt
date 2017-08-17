@@ -1,0 +1,9 @@
+<%@ Page Title="Деньги" Language="C#" MasterPageFile="~/Business/BusinessPage.Master" AutoEventWireup="true" CodeBehind="PaymentsList.aspx.cs" Inherits="Front.Business.Payments.List.PaymentsList" %>
+<%@ Import Namespace="Kontur.Elba.Web.Infrastructure.Common.Mvc.Views" %>
+<%@ Register TagPrefix="ib" Namespace="Front.Accounting" Assembly="Elba.Front" %>
+<asp:Content ContentPlaceHolderID="PageContent" runat="server">
+<div></div>
+</asp:Content>
+<asp:Content ContentPlaceHolderID="Footer" runat="server">
+<div></div>
+</asp:Content>
