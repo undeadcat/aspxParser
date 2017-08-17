@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SomeParser
 {
@@ -57,5 +58,10 @@ namespace SomeParser
             typeof(DateTime),
             typeof(TimeSpan)
         };
+
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
+        {
+            return !source.Any();
+        }
     }
 }

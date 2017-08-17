@@ -1,6 +1,6 @@
 <AspNetXmlDocument>
 Elements: 
-    <TopLevelDirective>
+    <Directive>
     Name: 
         <CompositeIdentifier>
         Components: 
@@ -48,7 +48,7 @@ Elements:
                 Inherits
         Value: 
             Front.Business.Payments.List.PaymentsList
-    <TopLevelDirective>
+    <Directive>
     Name: 
         <CompositeIdentifier>
         Components: 
@@ -61,7 +61,7 @@ Elements:
                 Namespace
         Value: 
             Kontur.Elba.Web.Infrastructure.Common.Mvc.Views
-    <TopLevelDirective>
+    <Directive>
     Name: 
         <CompositeIdentifier>
         Components: 

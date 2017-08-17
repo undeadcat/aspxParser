@@ -7,7 +7,7 @@ namespace SomeParser
         public List<ITagContent> Elements { get; set; }
     }
 
-    public class TopLevelDirective
+    public class Directive : ITagContent
     {
         public CompositeIdentifier Name { get; set; }
         public List<Attribute> Attributes { get; set; }

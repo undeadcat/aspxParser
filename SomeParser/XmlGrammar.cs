@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Irony.Ast;
 using Irony.Parsing;
 
@@ -9,7 +8,7 @@ namespace SomeParser
 {
     public class XmlGrammar : Grammar
     {
-        private readonly IdentifierTerminal _simpleIdentifier = new IdentifierTerminal("identifier")
+        private readonly IdentifierTerminal simpleIdentifier = new IdentifierTerminal("identifier")
         {
             Flags = TermFlags.NoAstNode
         };
@@ -32,7 +31,7 @@ namespace SomeParser
             {
                 Elements = node.ChildNodes.Select(c => c.AstNode).Cast<ITagContent>().ToList()
             });
-            
+
             element.Rule = tag | directive | codeFragment | xmlText;
             document.Rule = MakeStarRule(document, element);
             Root = document;
@@ -44,7 +43,7 @@ namespace SomeParser
             {
                 Components = node.ChildNodes.Select(n => n.FindTokenAndGetText()).ToList()
             });
-            identifier.Rule = MakePlusRule(identifier, ToTerm(":"), _simpleIdentifier);
+            identifier.Rule = MakePlusRule(identifier, ToTerm(":"), simpleIdentifier);
             return identifier;
         }
 
@@ -103,7 +102,7 @@ namespace SomeParser
 
         private static BnfTerm CodeFragment()
         {
-            var startTag = new StringLiteral("embeddedExpression")
+            return new CodeFragmentTerm
             {
                 AstConfig =
                 {
@@ -117,13 +116,6 @@ namespace SomeParser
                     }
                 }
             };
-
-            const StringOptions options = StringOptions.NoEscapes | StringOptions.AllowsLineBreak;
-            startTag.AddStartEnd("<%#", "%>", options);
-            startTag.AddStartEnd("<%:", "%>", options);
-            startTag.AddStartEnd("<%", "%>", options);
-            startTag.AddStartEnd("<%=", "%>", options);
-            return startTag;
         }
 
         private static CodeFragmentType GetCodeFragmentType(string tokenText)
@@ -136,12 +128,13 @@ namespace SomeParser
                 return CodeFragmentType.Expression;
             if (tokenText.StartsWith("<%"))
                 return CodeFragmentType.Code;
-            throw new ArgumentOutOfRangeException(nameof(tokenText), $"Could not determine code fragment type from token {tokenText}");
+            throw new ArgumentOutOfRangeException(nameof(tokenText),
+                $"Could not determine code fragment type from token {tokenText}");
         }
 
         private static NonTerminal Directive(BnfTerm identifier, BnfTerm attributesList)
         {
-            var directive = NonTerminal("directive", null, node => new TopLevelDirective
+            var directive = NonTerminal("directive", null, node => new Directive
             {
                 Name = (CompositeIdentifier) node.ChildNodes[1].AstNode,
                 Attributes = (List<Attribute>) node.ChildNodes[2].AstNode
@@ -152,23 +145,71 @@ namespace SomeParser
 
         private class XmlTextTerminal : Terminal
         {
-            private readonly Terminal _tagEndToken;
+            private readonly Terminal tagEndToken;
 
             public XmlTextTerminal(Terminal tagEndToken, AstNodeCreator nodeCreator) : base("xmlText")
             {
                 AstConfig.NodeCreator = nodeCreator;
-                _tagEndToken = tagEndToken;
+                this.tagEndToken = tagEndToken;
             }
 
             public override Token TryMatch(ParsingContext context, ISourceStream source)
             {
-                if (context.PreviousToken == null || context.PreviousToken.Terminal != _tagEndToken)
+                if (context.PreviousToken == null || context.PreviousToken.Terminal != tagEndToken)
                     return null;
                 var stopIndex = source.Text.IndexOf('<', source.Location.Position);
                 if (stopIndex < 0 || stopIndex == source.Location.Position)
                     return null;
                 source.PreviewPosition = stopIndex;
                 return source.CreateToken(OutputTerminal);
+            }
+        }
+
+        private class CodeFragmentTerm : Terminal
+        {
+            private const string DirectivePrefix = "<%@";
+
+            private readonly List<string> prefixes = new List<string>
+            {
+                "<%=",
+                "<%:",
+                "<%#",
+                "<%" //this needs to be last to avoid matching longer prefixes
+            };
+
+            public CodeFragmentTerm()
+                : base("codeFragment")
+            {
+            }
+
+            public override IList<string> GetFirsts()
+            {
+                return prefixes.Select(c => c.Substring(0, 1)).ToList();
+            }
+
+            public override Token TryMatch(ParsingContext context, ISourceStream source)
+            {
+                foreach (var prefix in prefixes)
+                {
+                    if (!PrefixMatches(source, prefix))
+                        continue;
+                    if (DirectivePrefix.StartsWith(prefix) && PrefixMatches(source, DirectivePrefix))
+                        continue;
+                    var startIndex = source.Location.Position + prefix.Length;
+                    const string suffix = "%>";
+                    var endIndex = source.Text.IndexOf(suffix, startIndex, StringComparison.Ordinal);
+                    if (endIndex < 0)
+                        continue;
+                    source.PreviewPosition = endIndex + suffix.Length;
+                    var tokenValue = source.Text.Substring(startIndex, endIndex - startIndex);
+                    return source.CreateToken(OutputTerminal, tokenValue);
+                }
+                return null;
+            }
+
+            private static bool PrefixMatches(ISourceStream source, string prefix)
+            {
+                return prefix.Where((t, i) => source.Text[source.Location.Position + i] != t).IsEmpty();
             }
         }
 
