@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Irony;
 using Irony.Parsing;
 
@@ -10,6 +11,9 @@ namespace SomeParser
     public class XmlParser
     {
         private readonly Parser parser;
+
+        private static readonly Regex ReplaceBrRegex =
+            new Regex("<BR>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public XmlParser()
         {
@@ -27,6 +31,7 @@ namespace SomeParser
 
         public AspNetXmlDocument Parse(string source)
         {
+            source = ReplaceBrRegex.Replace(source, "<br/>");
             var parseTree = parser.Parse(source);
             if (parseTree.Status != ParseTreeStatus.Parsed)
                 throw new InvalidOperationException(FormatMessage(parseTree.ParserMessages, source));

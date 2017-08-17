@@ -22,7 +22,7 @@ namespace SomeParser
             var element = Transient("element", null);
             var identifier = Identifier();
             var attributesList = AttributesList(identifier);
-            var xmlText = new XmlTextTerminal(ToTerm(">"),
+            var xmlText = new XmlTextTerminal(new List<Terminal> {ToTerm(">"), ToTerm("/>")},
                 (context, node) => node.AstNode = new XmlText {Content = node.FindTokenAndGetText()});
             var tag = Tag(identifier, attributesList, element);
             var directive = Directive(identifier, attributesList);
@@ -145,17 +145,17 @@ namespace SomeParser
 
         private class XmlTextTerminal : Terminal
         {
-            private readonly Terminal tagEndToken;
+            private readonly List<Terminal> tagEndTokens;
 
-            public XmlTextTerminal(Terminal tagEndToken, AstNodeCreator nodeCreator) : base("xmlText")
+            public XmlTextTerminal(List<Terminal> tagEndTokens, AstNodeCreator nodeCreator) : base("xmlText")
             {
                 AstConfig.NodeCreator = nodeCreator;
-                this.tagEndToken = tagEndToken;
+                this.tagEndTokens = tagEndTokens;
             }
 
             public override Token TryMatch(ParsingContext context, ISourceStream source)
             {
-                if (context.PreviousToken == null || context.PreviousToken.Terminal != tagEndToken)
+                if (context.PreviousToken == null || !tagEndTokens.Contains(context.PreviousToken.Terminal))
                     return null;
                 var stopIndex = source.Text.IndexOf('<', source.Location.Position);
                 if (stopIndex < 0 || stopIndex == source.Location.Position)
