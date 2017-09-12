@@ -46,10 +46,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTestBase.cs" />
-    <Content Include="TestData\PaymentsList.aspx.cs" />
-    <Content Include="TestData\PaymentsList.aspx.designer.cs" />
+    <Compile Include="GeneratorTests.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="TestData\Generator\NotServerHtmlTag\Test.aspx" />
+    <Content Include="TestData\Generator\NotServerHtmlTag\Test.aspx.cs" />
+    <Content Include="TestData\Generator\NotServerHtmlTag\Test.expected.aspx.designer.cs" />
+    <Content Include="TestData\Generator\ServerHtmlTag\Test.aspx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithNamespace\Controls\UserControl.ascx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithNamespace\Controls\UserControl.ascx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithNamespace\Pages\Test.aspx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithNamespace\Pages\Test.aspx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithNamespace\Pages\Test.expected.aspx.designer.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithRootRelative\Controls\UserControl.ascx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithRootRelative\Controls\UserControl.ascx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithRootRelative\Pages\Test.aspx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithRootRelative\Pages\Test.aspx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithRootRelative\Pages\Test.expected.aspx.designer.cs" />
+    <Content Include="TestData\Generator\ServerHtmlTag\Test.expected.aspx.designer.cs" />
+    <Content Include="TestData\Generator\ServerHtmlTag\Test.aspx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithPageRelative\Controls\UserControl.ascx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithPageRelative\Controls\UserControl.ascx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithPageRelative\Pages\Test.aspx" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithPageRelative\Pages\Test.aspx.cs" />
+    <Content Include="TestData\Generator\UserControlRegisteredWithPageRelative\Pages\Test.expected.aspx.designer.cs" />
+    <Content Include="TestData\PaymentsList.aspx.cs" />
+    <Content Include="TestData\PaymentsList.aspx.designer.cs" />
     <Content Include="TestData\TopLevelDirectives.expected" />
     <Content Include="TestData\TopLevelDirectives.txt" />
   </ItemGroup>

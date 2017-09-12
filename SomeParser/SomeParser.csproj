@@ -37,6 +37,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlResolver.cs" />
+    <Compile Include="DesignerGenerator.cs" />
     <Compile Include="DocumentExtensions.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Program.cs" />
