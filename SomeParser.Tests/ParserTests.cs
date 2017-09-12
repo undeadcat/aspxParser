@@ -9,12 +9,9 @@ using NUnit.Framework;
 namespace SomeParser.Tests
 {
     [TestFixture]
-    public class ParserTests
+    public class ParserTests : UnitTestBase
     {
-        private static string GetBaseDirectory() => AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
-
         private const int IndentSize = 4;
-        private const string TestDataDirectory = "TestData";
 
         [Test]
         public void PaymentsList()
@@ -337,27 +334,14 @@ Elements:
                 Assert.Fail("Expected file not found at path {0}. Written file", expectedFilePath);
             }
 
-            AssertEquals(actual, File.ReadAllText(expectedFilePath));
-        }
-
-        private static string GetTestDataDirectory()
-        {
-            return Path.Combine(GetBaseDirectory(), "..", "..", TestDataDirectory);
+            AssertSameText(actual, File.ReadAllText(expectedFilePath));
         }
 
         private static void DoTestFromText(string source, string expected)
         {
             var document = new XmlParser().Parse(source);
             var actual = DumpToString(document);
-            AssertEquals(actual, expected);
-        }
-
-        private static void AssertEquals(string actual, string expected)
-        {
-            if (string.Equals(actual.Trim(), expected.Trim())) return;
-            Console.WriteLine("Actual: \n" + actual);
-            Console.WriteLine("Expected: \n" + expected);
-            Assert.That(actual, Is.EqualTo(expected).NoClip);
+            AssertSameText(actual, expected);
         }
 
         private static string DumpToString(object obj)

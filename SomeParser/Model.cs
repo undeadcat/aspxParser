@@ -7,24 +7,44 @@ namespace SomeParser
         public List<ITagContent> Elements { get; set; }
     }
 
-    public class Directive : ITagContent
+    public class Directive : ITagContent, IAttributeOwner
     {
         public CompositeIdentifier Name { get; set; }
         public List<Attribute> Attributes { get; set; }
+
+        public override string ToString()
+        {
+            return $"<%@{Name} ${Attributes.JoinStrings(" ")}%>";
+        }
     }
 
     public class CompositeIdentifier
     {
         public List<string> Components { get; set; }
+
+        public string GetName()
+        {
+            return Components.JoinStrings(":");
+        }
+
+        public override string ToString()
+        {
+            return GetName();
+        }
     }
 
     public class Attribute
     {
         public CompositeIdentifier Name { get; set; }
         public string Value { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name}='{Value}'";
+        }
     }
 
-    public class Tag : ITagContent
+    public class Tag : ITagContent, IAttributeOwner
     {
         public CompositeIdentifier Name { get; set; }
         public List<Attribute> Attributes { get; set; }
@@ -33,6 +53,11 @@ namespace SomeParser
 
     public interface ITagContent
     {
+    }
+
+    public interface IAttributeOwner
+    {
+        List<Attribute> Attributes { get; set; }
     }
 
     public class XmlText : ITagContent

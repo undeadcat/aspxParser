@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestBase.cs" />
     <Content Include="TestData\PaymentsList.aspx.cs" />
     <Content Include="TestData\PaymentsList.aspx.designer.cs" />
     <Compile Include="ParserTests.cs" />

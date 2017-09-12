@@ -63,5 +63,10 @@ namespace SomeParser
         {
             return !source.Any();
         }
+
+        public static bool Contains<T>(this IEnumerable<T> source, Func<T, bool> condition)
+        {
+            return source.Where(condition).Any();
+        }
     }
 }
